@@ -2,10 +2,11 @@ import { forwardRef, useRef } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 
-const useStyles = createUseStyles((theme) => ({
+const useStyles = createUseStyles(theme => ({
     root: {
         position: 'relative',
     },
+
     textAreaWrapper: ({ hasError }) => ({
         position: 'relative',
         flexGrow: 1,
@@ -20,6 +21,10 @@ const useStyles = createUseStyles((theme) => ({
             height: 'auto',
             '&::-webkit-scrollbar': {
                 display: 'none',
+            },
+            '&::placeholder': {
+                color: '#4D3E36',
+                fontWeight: '400',
             },
             '-ms-overflow-style': 'none' /* IE and Edge */,
             scrollbarWidth: 'none' /* Firefox */,
@@ -37,14 +42,15 @@ const useStyles = createUseStyles((theme) => ({
         right: 10,
         bottom: 10,
         fontSize: 10,
-        color: theme.palette.grey[400],
+        color: '#B38D7A',
+        // color: theme.palette.grey[400],
     },
 }))
 
 /**
  * Expand the height of the input box as multiple lines of text are entered.
  */
-const autoExpand = (el) => {
+const autoExpand = el => {
     setTimeout(() => {
         el.style.cssText = 'height:auto; padding:0'
         el.style.cssText = 'height:' + el.scrollHeight + 'px'
@@ -78,7 +84,7 @@ const TextArea = forwardRef(function TextArea(
     /* Textarea must have at least one ref to autoExpand*/
     const ref = forwardedRef ?? textAreaRef
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = e => {
         if (typeof keyPressCallback === 'function') keyPressCallback(e)
         autoExpand(e.target)
     }

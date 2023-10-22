@@ -11,14 +11,16 @@ import { useWindowSize } from '../hooks/useWindowSize'
 import Toast from './Toast'
 import { AlertContext } from '../context/AlertProvider'
 import { useContext } from 'react'
-const getBackgroundColor = isDragging => (isDragging ? '#EFD5AF' : '#FAF3E8')
+const getBackgroundColor = isDragging => (isDragging ? '#FFE5D7' : '#F7FFDC')
+const getBorderColor = isDragging => (isDragging ? '#F2FFC7' : '#A9B389')
 const useStyles = createUseStyles(theme => ({
     task: {
         backgroundColor: isDragging => getBackgroundColor(isDragging),
+        borderColor: isDragging => getBorderColor(isDragging),
         display: 'grid',
         gridTemplateColumns: 'auto 0.1fr 1fr 0.3fr 0.25fr 0.12fr 0.12fr',
         alignItems: 'center',
-        borderTop: `1px solid ${theme.palette.grey[400]}`,
+        borderTop: '1px solid #A9B389',
         [theme.mediaQueries.m]: {
             paddingBottom: theme.spacing * 2,
             borderTop: 'unset',
@@ -26,7 +28,7 @@ const useStyles = createUseStyles(theme => ({
         },
     },
     last: {
-        borderBottom: `1px solid ${theme.palette.grey[400]}`,
+        borderBottom: '1px solid #6C7358',
         [theme.mediaQueries.m]: {
             borderBottom: 'unset',
         },

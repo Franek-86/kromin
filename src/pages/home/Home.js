@@ -55,6 +55,17 @@ const Homepage = () => {
     const [openedTask, setOpenedTask] = useState(null)
     const [showEditModal, setShowEditModal] = useState(false)
 
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+    }, [tasks])
+
+    useEffect(() => {
+        const items = JSON.parse(localStorage.getItem('tasks'))
+        if (items) {
+            setTasks(items)
+        }
+    }, [])
+
     const classes = useStyles()
 
     const { width } = useWindowSize()
@@ -83,7 +94,6 @@ const Homepage = () => {
      * @returns {Promise<void>}
      */
     const onEditTask = async (oldTask, newTask) => {
-        console.log('ciao')
         try {
             const { data } = await TasksAPI.editTask(newTask)
             onUpdateItem(oldTask, data)
@@ -194,6 +204,7 @@ const Homepage = () => {
             })
         }
     }
+
     const onDragEnd = result => {
         const { source, destination } = result
         // dropped outside the list
