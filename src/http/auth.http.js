@@ -1,9 +1,9 @@
-import axios from "./";
-
+import axios from './'
+const base = 'https://todoapp.backend.k-stage.dev/api/'
 
 const AuthAPI = {
     loginUser: data => {
-        const url = '/auth/login'
+        const url = `/auth/login`
         return axios.post(url, data)
     },
     logoutUser: () => {
@@ -13,7 +13,7 @@ const AuthAPI = {
     signupUser: data => {
         const url = '/auth/signup'
         return axios.post(url, data)
-    }
+    },
 }
 
 export default AuthAPI

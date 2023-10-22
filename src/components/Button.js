@@ -2,7 +2,7 @@ import { createUseStyles, useTheme } from 'react-jss'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-const useStyles = createUseStyles((theme) => ({
+const useStyles = createUseStyles(theme => ({
     root: ({
         size,
         variant,
@@ -80,7 +80,7 @@ const useStyles = createUseStyles((theme) => ({
             borderRadius: 100,
         }),
 
-        ...(disabled && {opacity: 0.5}),
+        ...(disabled && { opacity: 0.5 }),
 
         '& > span': {
             ...theme.utils.grid.centered,
