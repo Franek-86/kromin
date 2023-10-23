@@ -5,6 +5,7 @@
     top: 1rem;
     right: 1rem;
 }
+
 .alert-article {
     position: relative;
     top: 0;
@@ -19,7 +20,7 @@
     border-radius: 0.25rem;
     margin-bottom: 0.25rem;
 }
-.alert-article.danger {
+.alert-article.error {
     animation: test ease-in-out 1s;
 }
 .alert-article.success {
@@ -34,7 +35,7 @@
     animation-fill-mode: forwards;
 }
 
-.alert-article.danger {
+.alert-article.error {
     background-color: #f8d7da;
     color: #721c24;
     border-color: #f1aeb5;

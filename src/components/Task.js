@@ -2,7 +2,7 @@ import { createUseStyles } from 'react-jss'
 import { DeleteIcon, DragIcon, EditIcon } from '../theme/icons'
 import Checkbox from './Checkbox'
 import cx from 'classnames'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { TASK_MODEL } from '../models'
 import dayjs from 'dayjs'
@@ -133,27 +133,23 @@ const Task = forwardRef(
         const isMobile = width < 768
         const classes = useStyles(isDragging)
 
-        const { show, closeAlert, showAlert, resetAlert } =
-            useContext(AlertContext)
+        const {
+            show,
+            closeAlert,
+            showAlert,
+            triggerAlert,
+            isAlertOpen,
+            resetAlert,
+            closeAllAlerts,
+        } = useContext(AlertContext)
 
-        const openGreen = () => {
-            if (task.is_completed === false) {
-                showAlert()
-            }
-            const remove = setTimeout(() => {
-                closeAlert()
-            }, 3000)
-            return () => {
-                clearTimeout(remove)
-            }
-        }
         return (
             <div
                 className={cx(classes.task, isLast && classes.last)}
                 ref={ref}
                 {...draggableProps}
             >
-                {show ? <Toast green={'test'} /> : null}
+                {isAlertOpen ? <Toast /> : null}
                 {isMobile ? (
                     <>
                         <span className={classes.check}>
@@ -168,7 +164,10 @@ const Task = forwardRef(
                                                 !task[TASK_MODEL.completed],
                                         }
                                     )
-                                    openGreen()
+                                    triggerAlert({
+                                        severity: 'success',
+                                        title: 'task completed',
+                                    })
                                 }}
                             />
                         </span>
@@ -222,7 +221,10 @@ const Task = forwardRef(
                                                 !task[TASK_MODEL.completed],
                                         }
                                     )
-                                    openGreen()
+                                    triggerAlert({
+                                        severity: 'success',
+                                        title: 'task completed',
+                                    })
                                 }}
                             />
                         </span>

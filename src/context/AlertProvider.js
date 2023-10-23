@@ -1,3 +1,4 @@
+import { initial } from 'lodash'
 import React, {
     createContext,
     useCallback,
@@ -5,8 +6,6 @@ import React, {
     useReducer,
     useState,
 } from 'react'
-import { TbFaceIdError } from 'react-icons/tb'
-import { GrStatusGood } from 'react-icons/gr'
 
 export const AlertContext = createContext(null)
 
@@ -14,19 +13,23 @@ const SET_ALERT_DATA_ACTION = 'SET_ALERT_DATA'
 const SET_VISIBILITY_ACTION = 'SET_VISIBILITY'
 const RESET_ALERT_ACTION = 'RESET_ALERT'
 const TRIGGER_ALERT_ACTION = 'TRIGGER_ALERT'
-const CLOSE_SINGLE_ALERT = 'CLOSE_SINGLE_ALERT'
+const CLEAR_ARRAY_ACTION = 'CLEAR_ARRAY_ACTION'
+const CLOSE_SINGLE_ALERT_ACTION = 'CLOSE_SINGLE_ALERT_ACTION'
+const CLOSE_ALL_ALERT_ACTION = 'CLOSE_ALL_ALERT_ACTION'
+const SET_ALERT_ACTION = 'SET_ALERT_ACTION'
 
 const alertReducer = (state, action) => {
     switch (action.type) {
         case SET_ALERT_DATA_ACTION:
             return {
                 ...state,
-                data: action.payload.data, // data: { severity: 'success', title: 'my title', description: 'my desc'}
+                alertBody: action.payload.alertBody, // data: { severity: 'success', title: 'my title', description: 'my desc'}
             }
         case SET_VISIBILITY_ACTION:
             return {
                 ...state,
                 isOpen: action.payload.isOpen,
+                // alertArray: action.payload.alertArray,
             }
         case RESET_ALERT_ACTION:
             return {
@@ -41,94 +44,111 @@ const alertReducer = (state, action) => {
                 isOpen: true,
                 data: action.payload,
             }
-        case CLOSE_SINGLE_ALERT:
+
+        case CLOSE_SINGLE_ALERT_ACTION:
             return {
                 ...state,
                 alertArray: action.payload,
             }
+        case CLOSE_ALL_ALERT_ACTION:
+            return {
+                ...state,
+                alertArray: action.payload,
+            }
+        case SET_ALERT_ACTION:
+            return {
+                ...state,
+                alertArray: action.payload,
+            }
+
         default:
             return state
     }
 }
+
+//
 
 const AlertProvider = ({ children }) => {
     const initialState = {
         isOpen: false,
         data: {},
         alertArray: [],
+        alertBody: {},
     }
-
     const [alert, dispatch] = useReducer(alertReducer, initialState)
+    // const [alertArray, setAlertArray] = useState([])
+    const [trigAnime, setTrigAnime] = useState(false)
 
+    const resetAlert = useCallback(payload => {
+        dispatch({ type: RESET_ALERT_ACTION })
+    }, [])
+
+    const setAlert = useCallback(array => {
+        dispatch({
+            type: SET_ALERT_ACTION,
+            payload: array,
+        })
+    }, [])
     const closeAlert = useCallback(() => {
-        dispatch({ type: SET_VISIBILITY_ACTION, payload: { isOpen: false } })
+        dispatch({
+            type: SET_VISIBILITY_ACTION,
+            payload: { isOpen: false },
+        })
     }, [])
 
     const showAlert = useCallback(() => {
         dispatch({ type: SET_VISIBILITY_ACTION, payload: { isOpen: true } })
     }, [])
 
-    const setAlertData = useCallback(payload => {
-        dispatch({ type: SET_ALERT_DATA_ACTION, payload })
-    }, [])
-
     const triggerAlert = useCallback(payload => {
         dispatch({ type: TRIGGER_ALERT_ACTION, payload })
     }, [])
-    const resetAlert = useCallback(payload => {
-        dispatch({ type: RESET_ALERT_ACTION })
-    }, [])
 
     const closeSingleAlert = item => {
-        let closeOne = alert.alertArray.filter(i => {
-            return i.id !== item
+        const newArray = alert.alertArray.filter(i => {
+            return i.itemId !== item
         })
-        console.log('closeOne', closeOne)
 
-        dispatch({ type: CLOSE_SINGLE_ALERT, payload: closeOne })
+        dispatch({
+            type: CLOSE_SINGLE_ALERT_ACTION,
+            payload: newArray,
+        })
     }
-
-    const pushObj = () => {
-        let itemId = Math.floor(Date.now() + Math.random())
-        let obj = {
-            id: `${itemId}`,
-            title: 'Wrong credentials',
-            icon: <TbFaceIdError />,
-            status: 'danger',
-        }
-        if (alert.data.severity === 'error') {
-            alert.alertArray.push(obj)
-        }
+    const closeAllAlerts = () => {
+        const newArray = []
+        dispatch({
+            type: CLOSE_ALL_ALERT_ACTION,
+            payload: newArray,
+        })
     }
+    useEffect(() => {
+        if (!alert.isOpen) {
+            closeAllAlerts()
+        }
+    }, [alert.data])
 
     useEffect(() => {
-        alert.alertArray.forEach(i => {
-            const timeoutId = setTimeout(() => {
-                closeSingleAlert(i.id)
-            }, 3500)
-            return () => {
-                clearTimeout(timeoutId)
-                resetAlert()
-            }
-        })
-    })
-    console.log(alert)
+        const timeoutId = setTimeout(() => {
+            closeAlert()
+        }, 3000)
+        return () => {
+            clearTimeout(timeoutId)
+        }
+    }, [alert.data])
 
     return (
         <AlertContext.Provider
             value={{
-                alertArray: alert.alertArray,
                 dispatchAlert: dispatch,
                 isAlertOpen: alert.isOpen,
                 alertData: alert.data,
+                alertArray: alert.alertArray,
                 closeAlert,
                 showAlert,
-                setAlertData,
                 triggerAlert,
                 closeSingleAlert,
-                pushObj,
-                resetAlert,
-                show: alert.isOpen,
+                closeAllAlerts,
+                setAlert,
             }}
         >
             {children}
@@ -137,3 +157,17 @@ const AlertProvider = ({ children }) => {
 }
 
 export default AlertProvider
+
+// const testClose = async () => {
+//     const test = alert.alertArray.forEach(i => {
+//         i.slide = 'true'
+//     })
+
+//     setTrigAnime(!trigAnime)
+
+//     await new Promise(r => setTimeout(r, 1000))
+//     closeAlert()
+// }
+// const clearArray = useCallback(payload => {
+//     dispatch({ type: CLEAR_ARRAY_ACTION, payload: { alertArray: [] } })
+// }, [])

@@ -167,7 +167,6 @@ const ControlledSelect = ({
             onClear && onClear()
             return
         }
-        // console.log('change')
         onChangeCallback(selected)
     }
     return (

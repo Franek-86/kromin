@@ -1,72 +1,126 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AlertContext } from '../context/AlertProvider'
+import AlertProvider, { AlertContext } from '../context/AlertProvider'
 import { useContext } from 'react'
 import { TbFaceIdError } from 'react-icons/tb'
-import { GrStatusGood } from 'react-icons/gr'
 import { FaTimes } from 'react-icons/fa'
-
+import { GrStatusGood } from 'react-icons/gr'
 import '../css/toast.css'
+import useAlert from '../hooks/useAlert'
 
-const Toast = green => {
+const Toast = () => {
     const {
         alertData,
-        alertArray,
-        closeSingleAlert,
-        pushObj,
         closeAlert,
-        animation,
+        triggerAlert,
+        alertArray,
+        isAlertOpen,
+        closeSingleAlert,
+        setAlert,
+        closeAllAlerts,
     } = useContext(AlertContext)
-    let check = green.green
+    const [trigAnime, setTrigAnime] = useState(false)
+
+    const setAlertData = payload => {
+        let id = Math.floor(Date.now() + Math.random())
+        const successData = {
+            itemId: id,
+            title: `${payload.title}`,
+            icon: <GrStatusGood />,
+            status: `${payload.severity}`,
+            slide: 'false',
+        }
+        const dangerData = {
+            itemId: id,
+            title: `${payload.title}`,
+            icon: <TbFaceIdError />,
+            status: `${payload.severity}`,
+            slide: 'false',
+        }
+
+        let alertBody
+        if (payload.severity === 'error') {
+            alertBody = dangerData
+        } else if (payload.severity === 'success') {
+            alertBody = successData
+        } else {
+            alertBody = 'no data to display'
+        }
+        return alertBody
+    }
+    let testArray = []
 
     useEffect(() => {
-        pushObj()
+        if (alertData) {
+            let toastData = setAlertData(alertData)
+            testArray.push(toastData)
+            setAlert(testArray)
+        }
     }, [alertData])
 
-    let greenObj = {
-        id: `1`,
-        title: 'Task completed',
-        icon: <GrStatusGood />,
-        status: 'success',
-    }
-    let switcher = []
-    if (check === 'test') {
-        switcher = [greenObj]
-    } else {
-        switcher = alertArray
+    const closeAfterAnime = async id => {
+        alertArray.forEach(i => {
+            if (i.itemId === id) {
+                i.slide = 'true'
+            }
+        })
+        await new Promise(r => setTimeout(r, 100))
+        setTrigAnime(!trigAnime)
+        closeSingleAlert()
     }
 
-    //   const test = document.body.classList.add('bg-salmon')
+    // const closeAllAfterAnime = async () => {
+    //     console.log('ciao')
+    //     console.log(alertArray)
+    //     alertArray.forEach(i => {
+    //         console.log(i)
+    //     })
+    //     console.log('one sec')
+    //     await new Promise(r => setTimeout(r, 100))
+    //     setTrigAnime(!trigAnime)
+    //     closeAllAlerts()
+    // }
 
-    return (
-        <div className="alert-section">
-            {switcher.map((i, index) => {
-                const { id, status, title, icon } = i
-                return (
-                    <article
-                        key={index}
-                        data-id={id}
-                        className={`alert-article ${status} ${animation}`}
-                    >
-                        <div className="alert-body">
-                            {icon}
-                            <span className="alert-message">{title}</span>
-                        </div>
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         closeAllAfterAnime()
+    //     }, 3000)
+    // }, [alertData])
 
-                        <div
-                            onClick={() => {
-                                check === 'test'
-                                    ? closeAlert()
-                                    : closeSingleAlert(id)
-                            }}
-                            className="alert-close"
+    if (alertArray.length > 0) {
+        return (
+            <div className="alert-section">
+                {alertArray.map((i, index) => {
+                    const { itemId: id, status, title, icon, slide } = i
+                    return (
+                        <article
+                            key={index}
+                            data-id={id}
+                            className={`alert-article ${status} ${
+                                slide === 'true' ? 'anime' : 'nothing'
+                            }`}
                         >
-                            <FaTimes />
-                        </div>
-                    </article>
-                )
-            })}
-        </div>
-    )
+                            {/* ${animation} qui su*/}
+                            <div className="alert-body">
+                                {icon}
+                                <span className="alert-message">{title}</span>
+                            </div>
+                            <div
+                                onClick={() => closeAfterAnime(id)}
+                                // onClick={() => {
+                                //     check === 'test'
+                                //         ? closeAlert()
+                                //         : closeSingleAlert(id)
+                                // }}
+                                className="alert-close"
+                            >
+                                <FaTimes />
+                            </div>
+                        </article>
+                    )
+                })}
+            </div>
+        )
+    }
 }
 
 export default Toast

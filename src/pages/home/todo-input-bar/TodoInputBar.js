@@ -141,9 +141,7 @@ const TodoInputBar = ({ task = {}, onAddTaskCb, onEditTaskCb, onCancelCb }) => {
     const [isOpen, setIsOpen] = useState(false)
     const showError = useError()
     const classes = useStyles({ isOpen })
-    console.log(inputText)
     const onConfirm = async () => {
-        console.log('on confirm')
         const updatedTask = {
             ...currentTask,
             [TASK_MODEL.description]: inputText,
@@ -159,7 +157,6 @@ const TodoInputBar = ({ task = {}, onAddTaskCb, onEditTaskCb, onCancelCb }) => {
             }
             reset()
         } catch (error) {
-            console.log('error', error)
             handleApiError({
                 error,
                 handleGeneralError: showError,

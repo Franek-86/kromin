@@ -56,7 +56,7 @@ const Login = () => {
     const showError = useError()
     const { createUser } = useUser()
     const [showPassword, setShowPassword] = useState(false)
-    const { showAlert } = useContext(AlertContext)
+    const { isAlertOpen } = useContext(AlertContext)
 
     const methods = useForm({
         shouldUnregister: false,
@@ -90,7 +90,7 @@ const Login = () => {
 
     return (
         <>
-            {showAlert ? <Toast /> : null}
+            {isAlertOpen ? <Toast /> : null}
             <FormProvider {...methods}>
                 <form
                     onSubmit={handleSubmit(submitHandler)}

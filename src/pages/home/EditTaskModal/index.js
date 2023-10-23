@@ -52,7 +52,6 @@ const EditTaskModal = ({ onClose, onEditTaskCb, task }) => {
     const [date, setDate] = useState(task[TASK_MODEL.date])
 
     const classes = useStyles()
-    console.log(onEditTaskCb)
 
     const onSubmit = formValues => {
         onEditTaskCb &&
@@ -92,7 +91,6 @@ const EditTaskModal = ({ onClose, onEditTaskCb, task }) => {
     })
 
     const description = useWatch({ name: TASK_MODEL.description, control })
-    console.log(description)
 
     return (
         <Popover
