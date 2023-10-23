@@ -47,13 +47,12 @@ const Toast = () => {
         }
         return alertBody
     }
-    let testArray = []
 
     useEffect(() => {
         if (alertData) {
             let toastData = setAlertData(alertData)
-            testArray.push(toastData)
-            setAlert(testArray)
+            alertArray.push(toastData)
+            // setAlert(testArray)
         }
     }, [alertData])
 

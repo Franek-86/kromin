@@ -75,6 +75,7 @@ const AlertProvider = ({ children }) => {
         alertArray: [],
         alertBody: {},
     }
+
     const [alert, dispatch] = useReducer(alertReducer, initialState)
     // const [alertArray, setAlertArray] = useState([])
     const [trigAnime, setTrigAnime] = useState(false)
