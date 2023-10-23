@@ -77,8 +77,6 @@ const AlertProvider = ({ children }) => {
     }
 
     const [alert, dispatch] = useReducer(alertReducer, initialState)
-    // const [alertArray, setAlertArray] = useState([])
-    const [trigAnime, setTrigAnime] = useState(false)
 
     const resetAlert = useCallback(payload => {
         dispatch({ type: RESET_ALERT_ACTION })

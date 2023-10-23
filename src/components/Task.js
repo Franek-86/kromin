@@ -133,15 +133,14 @@ const Task = forwardRef(
         const isMobile = width < 768
         const classes = useStyles(isDragging)
 
-        const {
-            show,
-            closeAlert,
-            showAlert,
-            triggerAlert,
-            isAlertOpen,
-            resetAlert,
-            closeAllAlerts,
-        } = useContext(AlertContext)
+        const { triggerAlert, isAlertOpen } = useContext(AlertContext)
+
+        const triggerToast = () => {
+            triggerAlert({
+                severity: 'success',
+                title: 'task completed',
+            })
+        }
 
         return (
             <div
@@ -164,10 +163,7 @@ const Task = forwardRef(
                                                 !task[TASK_MODEL.completed],
                                         }
                                     )
-                                    triggerAlert({
-                                        severity: 'success',
-                                        title: 'task completed',
-                                    })
+                                    triggerToast()
                                 }}
                             />
                         </span>
@@ -221,10 +217,7 @@ const Task = forwardRef(
                                                 !task[TASK_MODEL.completed],
                                         }
                                     )
-                                    triggerAlert({
-                                        severity: 'success',
-                                        title: 'task completed',
-                                    })
+                                    triggerToast()
                                 }}
                             />
                         </span>

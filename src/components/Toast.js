@@ -52,7 +52,6 @@ const Toast = () => {
         if (alertData) {
             let toastData = setAlertData(alertData)
             alertArray.push(toastData)
-            // setAlert(testArray)
         }
     }, [alertData])
 
@@ -67,23 +66,20 @@ const Toast = () => {
         closeSingleAlert()
     }
 
-    // const closeAllAfterAnime = async () => {
-    //     console.log('ciao')
-    //     console.log(alertArray)
-    //     alertArray.forEach(i => {
-    //         console.log(i)
-    //     })
-    //     console.log('one sec')
-    //     await new Promise(r => setTimeout(r, 100))
-    //     setTrigAnime(!trigAnime)
-    //     closeAllAlerts()
-    // }
+    const closeAllAfterAnime = async () => {
+        alertArray.forEach(i => {
+            i.slide = 'true'
+        })
+        await new Promise(r => setTimeout(r, 100))
+        setTrigAnime(!trigAnime)
+        closeAllAlerts()
+    }
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         closeAllAfterAnime()
-    //     }, 3000)
-    // }, [alertData])
+    useEffect(() => {
+        setTimeout(() => {
+            closeAllAfterAnime()
+        }, 3000)
+    }, [alertData])
 
     if (alertArray.length > 0) {
         return (
@@ -98,18 +94,12 @@ const Toast = () => {
                                 slide === 'true' ? 'anime' : 'nothing'
                             }`}
                         >
-                            {/* ${animation} qui su*/}
                             <div className="alert-body">
                                 {icon}
                                 <span className="alert-message">{title}</span>
                             </div>
                             <div
                                 onClick={() => closeAfterAnime(id)}
-                                // onClick={() => {
-                                //     check === 'test'
-                                //         ? closeAlert()
-                                //         : closeSingleAlert(id)
-                                // }}
                                 className="alert-close"
                             >
                                 <FaTimes />
