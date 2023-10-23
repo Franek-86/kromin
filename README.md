@@ -1,3 +1,21 @@
+# Qui di sotto gli esercizi su cui ho lavorato
+
+- Esercizio 0 - Startup!
+- Esercizio 1  - Let me know what happened!
+- Esercizio 2  - Beautiful D&D, ok but make it really
+  Beautiful.
+- Esercizio 4 - Done!
+
+
+
+
+
+
+
+
+
+
+
 # Todos Front-end repo
 Repo for the React front-end of Todos app project.
 
@@ -11,4 +29,4 @@ Steps for build the front-end app.
 
 - Run `yarn build`
 - The `.\build` folder is ready to be deployed.
-- If you want to run it with a static server `serve -s build`
+- If you want to Esercizio 0 - Startup!run it with a static server `serve -s build`
