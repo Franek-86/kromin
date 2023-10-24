@@ -7,7 +7,7 @@ import { GrStatusGood } from 'react-icons/gr'
 import '../css/toast.css'
 import useAlert from '../hooks/useAlert'
 
-const Toast = () => {
+const Toast = green => {
     const {
         alertData,
         closeAlert,
@@ -19,6 +19,7 @@ const Toast = () => {
         closeAllAlerts,
     } = useContext(AlertContext)
     const [trigAnime, setTrigAnime] = useState(false)
+    let check = green.green
 
     const setAlertData = payload => {
         let id = Math.floor(Date.now() + Math.random())
@@ -80,6 +81,40 @@ const Toast = () => {
             closeAllAfterAnime()
         }, 3000)
     }, [alertData])
+
+    if (check === 'test') {
+        return (
+            <div className="alert-section">
+                {alertArray
+                    .map((i, index) => {
+                        const { itemId: id, status, title, icon, slide } = i
+                        return (
+                            <article
+                                key={index}
+                                data-id={id}
+                                className={`alert-article ${status} ${
+                                    slide === 'true' ? 'anime' : 'nothing'
+                                }`}
+                            >
+                                <div className="alert-body">
+                                    {icon}
+                                    <span className="alert-message">
+                                        {title}
+                                    </span>
+                                </div>
+                                <div
+                                    onClick={() => closeAfterAnime(id)}
+                                    className="alert-close"
+                                >
+                                    <FaTimes />
+                                </div>
+                            </article>
+                        )
+                    })
+                    .slice(0, 1)}
+            </div>
+        )
+    }
 
     if (alertArray.length > 0) {
         return (

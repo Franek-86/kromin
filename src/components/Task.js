@@ -148,7 +148,7 @@ const Task = forwardRef(
                 ref={ref}
                 {...draggableProps}
             >
-                {isAlertOpen ? <Toast /> : null}
+                {isAlertOpen ? <Toast green={'test'} /> : null}
                 {isMobile ? (
                     <>
                         <span className={classes.check}>
