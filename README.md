@@ -6,7 +6,7 @@
     Beautiful.
 -   Esercizio 4 - Done!
 
-Gli ultimi update prima della deadline sono dei workaround sul toast alert, non sapendo ancora come sistemarli e per evitare infestassero la home.
+Tra ultimi update prima della deadline sono dei workaround sul toast alert, non sapendo ancora come sistemarli e giusto per evitare infestassero la home.
 
 # Todos Front-end repo
 
