@@ -163,6 +163,7 @@ const Task = forwardRef(
                                                 !task[TASK_MODEL.completed],
                                         }
                                     )
+                                    console.log(TASK_MODEL.completed)
                                     triggerToast()
                                 }}
                             />
